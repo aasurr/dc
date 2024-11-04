@@ -1,0 +1,56 @@
+EXPT 9 
+ 
+clc; 
+clear all; 
+close all; 
+i = input('Enter no. of elements :'); 
+p = input('Enter the probability :'); 
+q = input('Enter the conditional matrix :'); 
+sum = 0; 
+%Entropy H(x) 
+for n=1:i 
+    H = sum + p(n) * log(1/p(n))/log(2); 
+    sum = H; 
+end 
+disp('H(x) : '); 
+disp(H); 
+%Joint probability matrix 
+for n=1:i 
+    for m=1:i 
+        a(n,m) = q(n,m)*p(n); 
+    end 
+end 
+disp('P(x,y) : '); 
+disp(a); 
+%Entropy H(y/x) 
+d=0; 
+for n=1:i 
+    for m=1:i 
+        H1 = d + (a(n,m) * log2(1/(q(n,m)))); 
+        d = H1; 
+    end 
+end 
+disp('H(y/x) :'); 
+disp(H1); 
+%Probability p(y) 
+for n=1:i 
+    w = 0; 
+    for m=1:i 
+        s(n) = w + a(m,n); 
+            w=s(n); 
+    end 
+end 
+disp('P(y) :'); 
+disp(s); 
+%Entropy H(y) 
+k = 0; 
+for n=1:i 
+    H2 = k + (s(n) * log2(1/s(n))); 
+k=H2; 
+end 
+disp('H(y): '); 
+disp(H2); 
+%Mutual Information 
+m=H2-H1; 
+disp('Mutual Information: '); 
+disp(m);
