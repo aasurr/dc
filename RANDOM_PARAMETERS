@@ -19,11 +19,11 @@ time_lag=((-length(x)+1):1:(length(x)-1))*Ts;
 auto_cor=xcorr(x,x)/fs; 
 y=1/fs*fft(auto_cor,N); 
 PSD2=abs(1/N0-1)*fftshift(fft(auto_cor,N)); 
-f_vec=[0:1:N-1]*fs/N-Fs/2; 
+f_vec=[0:1:N-1]*fs/N-fs/2; 
 figure(2) 
 plot(f_vec,10*log10(PSD2)); 
-xlabel('Frq[Hz]',' fontsize',14); 
-ylabel('dB/Hz','FontSize',,14); 
+xlabel('Frq[Hz]','fontsize',14); 
+ylabel('dB/Hz','FontSize',14); 
 title('Power spectral density - method 2 ','FontSize',14); 
 grid on 
 set(gcf,'color','w'); 
@@ -45,8 +45,7 @@ hist(noise,20)
 set(gca,'FontSize',14) 
 xlabel('Noise amplitude','FontSize',14); 
 ylabel('Freq of occurance','FontSize',14); 
-title('Similated histogram of white Gaussian 
-noise','FontSize',14); 
+title('Similated histogram of white Gaussian noise','FontSize',14); 
 figure(5) 
 plot(t,x) 
 set(gca,'FontSize',14) 
