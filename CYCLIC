@@ -1,50 +1,54 @@
-clc; 
-n=input('Enter value of n'); 
-k=input('Enter value of k'); 
-p=input('Enter parity matrix'); 
-%iden ty matrix 
-i =eye(k); 
-disp('Iden ty Matrix:'); 
-disp(i); 
-q=n-k; 
-disp('Total Number of Check Bits:'); 
-disp(q);           
-x=0:1:2^k-1; 
-m=[de2bi(x,k,'le-msb')]; 
-disp('Message Vectors:'); 
-disp(m); 
-g=[i,p]; 
-disp('Generator Matrix:'); 
-disp(g); 
-s=m*g; 
-s1=rem(s,2); 
-disp('Codewords:'); 
-disp(s1); 
-%Decoding of Linear Block Coding 
-r=input('Enter the received code word:'); 
-pt=transpose(p); 
-b=eye(q); 
-h=[pt,b]; 
-disp('Parity Check Matrix:'); 
-disp(h); 
-ht=transpose(h); 
-disp('Transpose of Parity Check Matrix:'); 
-disp(ht); 
-d=(r*ht); 
-s2=rem(d,2); 
-disp ('Syndrome Vector:'); 
-disp(s2); 
-e=eye(n); 
-disp('Error Matrix:'); 
-disp(e); 
-if(s2==0) 
-    disp('Codeword is correct'); 
-else 
-    for i=1:n 
-        if(s2==ht(i,:)) 
-            c=xor(r,e(i,:)); 
-            disp('Corrected codeword'); 
-            disp(c); 
-        end 
-end 
-end    
+
+
+clc;
+n = input('Enter value of n');
+k = input('Enter value of k');
+p = input('Enter parity matrix');
+ 
+i = eye(k);
+disp('Identity Matrix :');
+disp(i);
+q = n-k;
+disp('Total number of check Bits:');
+disp(q);
+x =0:1:2^k-1;
+m = [de2bi(x,k,'left-msb')];
+disp('Message Vectors: ');
+disp(m);
+g = [i p];
+disp('Generator Matrix');
+disp(g);
+s = m*g;
+s1 = rem(s,2);
+disp('Codewords: ');
+disp(s1);
+ 
+r = input('Enter the recevied code word: ');
+pt = transpose(p);
+b = eye(q);
+h = [pt b];
+disp('Parity check Matrix:');
+disp(h);
+ht = transpose(h);
+disp('Transpose of Parity Check Matrix:');
+disp(ht);
+d = (r*ht);
+s2 = rem(d,2);
+disp('Syndrome Vector:');2
+disp(s2);
+e = eye(n);
+disp('Error Matrix:');
+disp(e);
+if(s2==0)
+    disp('codeword is correct');
+else
+    for i =1:n
+      if (s2==ht(i,:))
+            c = xor(r,e(i,:));
+            disp('Corrected codeword');
+            disp(c);
+            
+      end
+    end
+end
+
