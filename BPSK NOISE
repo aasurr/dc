@@ -1,68 +1,52 @@
-% Clear the environment 
-clc; 
-clear all; 
-close all; 
- 
-% Define number of data bits 
-nr_data_bits = 8192; 
-b_data = (randn(1, nr_data_bits)) > 0.5; 
-b = [b_data]; 
- 
-% Ini alize BPSK modula on 
-d = zeros(1, length(b)); 
-for n = 1:length(b) 
-    if (b(n) == 0) 
-        d(n) = exp(j * 2 * pi); % for 0 bit 
-    end 
-       if(b(n)==1) 
-       d(n) = exp(j* pi);      % for 1 bit 
-    end 
-end 
- 
-bpsk = d; 
- 
-% Plot BPSK constella on 
-figure(1); 
-plot(d ,'o'); 
-axis([-2 2 -2 2]);  
-grid on; 
-xlabel('Real'); 
-ylabel('Imaginary'); 
-title('BPSK Constella on'); 
- 
-% Define SNR range and ini alize BER 
-SNR_range = 0:24; 
-BER1 = []; 
-SNR1 = []; 
- 
-for SNR = 0:length(SNR); 
-    sigma = sqrt(10.0^(-SNR / 10.0)); 
-    snbpsk = (real(bpsk) + sigma. * randn(size(bpsk))) +i. * (imag(bpsk) + sigma * randn(size(bpsk))); 
- 
-figure(2); 
-plot(snbpsk, 'o'); 
-axis([-2 2 -2 2]);  
-grid on; 
-xlabel('Real'); 
-ylabel('Imaginary'); 
-title('BPSK Constella on with Noise (SNR = 0 dB)'); 
- 
-% Receiver - Hard decision decoding 
-r = snbpsk; 
-ptr = [real(r) < 0]; 
-ptr=ptr(:)’; 
-ptr1=ptr; 
-ne = sum(b ~= ptr1); 
-BER = ne/ nr_data_bits; 
-BER1 = [BER1 BER]; 
-SNR1 = [SNR1 SNR]; 
-end 
-% Plot BER vs. SNR 
-f
- igure(3); 
-semilogy(SNR1, BER1, '-*'); 
-grid on; 
-xlabel('SNR Eb/No (dB)'); 
-ylabel('BER'); 
-title('Simula on of BER /SNR for BPSK'); 
-legend('BER =Simulated');
+clc;
+clear all;
+close all;
+nr_data_bits=8192;
+b_data=(randn(1,nr_data_bits))>.5;
+b=[b_data];
+d=zeros(1,length(b));
+for n=1:length(b)
+    if (b(n)==0)
+        d(n)=exp(j*2*pi);
+    end
+    if (b(n)==1)
+        d(n)=exp(j*pi);
+    end
+end
+bpsk=d;
+figure(1);
+plot(d,'o');
+axis([-2 2 -2 2]);
+grid on;
+xlabel('real');
+ylabel('imag');
+title('bpsk constellation');
+SNR=0:24;
+BER1=[];
+SNR1=[];
+for SNR=0:length(SNR)
+    sigma=sqrt(10.0^(-SNR/10.0));
+    snbpsk=(real(bpsk)+sigma*randn(size(bpsk))) + i*(imag(bpsk)+sigma*randn(size(bpsk)));
+    figure(2);
+    plot(snbpsk,'o');
+    axis([-2 2 -2 2]);
+    grid on;
+    xlabel('real');
+    ylabel('imag');
+    title('bpsk constellation with noise');
+    r=snbpsk;
+    ptr=[real(r)<0];
+    ptr=ptr(:)';
+    ptr1=ptr;
+    ne=sum(b~=ptr1);
+    BER=ne/nr_data_bits;
+    BER1=[BER1 BER];
+    SNR1=[SNR1 SNR];
+end
+figure(3);
+semilogy(SNR1,BER1,'-*');
+grid on;
+xlabel('SNR');
+ylabel('BER');
+title('simulation of BER/SNR');
+legend('BER-simulated');
