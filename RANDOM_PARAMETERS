@@ -1,54 +1,42 @@
-clc; 
-clear all; 
-close all; 
-%% setup and define variables; 
-f0=10; 
-fs=100; 
-Ts=1/fs; 
-N0=100; 
-N=2^16; 
-t=[0:Ts:Ts*(N0-1)]; 
-x=20*sin(2*pi*f0*t); 
-figure(1) 
-plot(t,x); 
-title("Sine Signal"); 
-xlabel("Time"); 
-ylabel("Amp"); 
-grid on; 
-time_lag=((-length(x)+1):1:(length(x)-1))*Ts; 
-auto_cor=xcorr(x,x)/fs; 
-y=1/fs*fft(auto_cor,N); 
-PSD2=abs(1/N0-1)*fftshift(fft(auto_cor,N)); 
-f_vec=[0:1:N-1]*fs/N-fs/2; 
-figure(2) 
-plot(f_vec,10*log10(PSD2)); 
-xlabel('Frq[Hz]','fontsize',14); 
-ylabel('dB/Hz','FontSize',14); 
-title('Power spectral density - method 2 ','FontSize',14); 
-grid on 
-set(gcf,'color','w'); 
-axis tight 
-figure(3) 
-plot(time_lag,auto_cor); 
-title('Auto-correction function'); 
-xlabel('Lags'); 
-ylabel('Correction'); 
-Avarage_power_method_2=sum(PSD2)*fs/N    
-noise_PSD=.5; 
-variance=noise_PSD*fs; 
-sigma=sqrt(variance); 
-noise=transpose(sigma*randn(N0,1)); 
-xsignal=20*sin(2*pi*f0*t); 
-x=xsignal+noise; 
-figure(4) 
-hist(noise,20) 
-set(gca,'FontSize',14) 
-xlabel('Noise amplitude','FontSize',14); 
-ylabel('Freq of occurance','FontSize',14); 
-title('Similated histogram of white Gaussian noise','FontSize',14); 
-figure(5) 
-plot(t,x) 
-set(gca,'FontSize',14) 
-xlabel('Time (s','FontSize',14) 
-ylabel('Amp','FontSize',14) 
-title('Noisey sinusoid','FontSize',14)
+clc;
+clear all;
+close all;
+f0=10;
+fs=100;
+ts=1/fs;
+N0=100;
+N=2^16;
+t=[0:ts:ts*(N0-1)];
+x=20*sin(2*pi*f0*t);
+figure(1);
+plot(t,x);
+grid on;
+
+% noise add in sin wave :
+
+noise_psd=1.5;
+varience=noise_psd*fs;
+sigma=sqrt(varience);
+noise=transpose(sigma*rand(N0,1));
+xsignal=20*sin(2*pi*f0*t);
+x=xsignal + noise;
+figure(2);
+plot(t,x);
+
+%histogram : 
+figure(3);
+hist(noise,20);
+set(gcs,'fontsize',20)
+
+
+% psd ; 
+time_lag=((-length(x)+1) : 1 : (length(x)-1) );
+auto_corr=xcorr(x,x)/fs;
+psd2=abs(1/(N0-1)*fftshift(fft(auto_corr,N)));
+f_vector=[0:1:N-1]*fs/N-fs/2;
+figure(4);
+plot(f_vector,10*log10(psd2));
+
+%auto-correltion
+figure(5);
+plot(time_lag,auto_corr)
